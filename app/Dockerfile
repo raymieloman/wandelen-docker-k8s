@@ -1,0 +1,14 @@
+FROM maven:3.9.3-amazoncorretto-20 as build
+ENV HOME=/usr/src/scaffolded
+RUN mkdir -p $HOME
+WORKDIR $HOME
+ADD . $HOME
+RUN --mount=type=cache,target=/root/.m2 mvn -f $HOME/pom.xml clean package
+RUN mv target/*jar target/app.jar
+
+FROM eclipse-temurin:20-jre-alpine
+USER 1000
+ENTRYPOINT ["java","-jar", "./app.jar"]
+HEALTHCHECK --interval=10s --timeout=3s --start-period=10s CMD wget -qO- http://localhost:8080/api/wandelings || exit 1
+EXPOSE 8080
+COPY --from=build /usr/src/scaffolded/target/app.jar app.jar

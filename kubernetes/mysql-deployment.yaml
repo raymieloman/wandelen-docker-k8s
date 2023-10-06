@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: wandelen
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: wandelen
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql/mysql-server:8.0.28
+        name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: rootPassword
+              optional: false
+        - name: MYSQL_DATABASE
+          value: "wandelen"
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: username
+              optional: false
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: password
+              optional: false
+        ports:
+        - containerPort: 3306
+          name: mysql
+        startupProbe:
+          tcpSocket:
+            port: 3306
+          failureThreshold: 30
+          periodSeconds: 5
+        livenessProbe:
+          initialDelaySeconds: 0 # Default 0, time before the very first check
+          exec:
+            command:
+            - ls
+            - /var/lib/mysql
+        readinessProbe:
+          tcpSocket:
+            port: 3306
+          initialDelaySeconds: 0 #Default 0, time before the very first check
+          periodSeconds: 10 # Default 10, checks every 10 seconds
+          timeoutSeconds: 2 # Default 1, the call may last at most 2 seconds
+          successThreshold: 1 # Default 1, after a failure this is the minimum successful calls before the api should be considered ready (again)
+          failureThreshold: 3 # Default 3, after a success this is the minim unsuccessful calls before the api should be considered failing
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim

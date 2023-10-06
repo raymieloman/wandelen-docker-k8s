@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myconfigmap
+  namespace: wandelen
+data:
+  port: "8080"
+  database: wandelen
+  database_url: jdbc:mysql://mysql:3306/wandelen?serverTimezone=Europe/Amsterdam

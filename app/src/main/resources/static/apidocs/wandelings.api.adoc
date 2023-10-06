@@ -1,0 +1,396 @@
+:revnumber: {docVersion}
+:toclevels: 1
+:docinfo2:
+:sectnumlevels: 1
+:sectnums!:
+:baseUrl: http://localhost:8080/api/wandelings
+
+= Wandeling API Documentation
+{docdate}
+
+== Introduction
+
+This is the documentation for the Wandeling API.
+
+The Wandeling API is a collection of CRUD API endpoints used to manipulate wandelings registered in the application.
+
+[source, json, options="nowrap",  subs="attributes"]
+.Endpoints
+----
+GET    {baseUrl}
+POST   {baseUrl}
+GET    {baseUrl}/{id}
+PUT    {baseUrl}/{id}
+DELETE {baseUrl}/{id}
+----
+
+For a detailed explanation of the endpoints see below
+
+:sectnums:
+
+== GET: Get wandelings
+
+.Purpose
+Obtains a list of wandelings
+
+=== Request
+[caption=""]
+.HTTP Request Header Parameters
+|===
+|Header|Value
+
+|Content-Type|application/json
+|===
+
+
+[caption=""]
+.Request properties
+|===
+|Property|Value
+
+|URL|{baseUrl}
+|Method|GET
+|===
+
+.Path parameters
+* not applicable
+
+.Request Body
+* not applicable
+
+.Sample request
+[source, json, options="nowrap", subs="attributes"]
+----
+GET {baseUrl}
+----
+
+=== Response
+
+Our controller's method returns a list of wandelings represented as JSON
+
+[caption=""]
+.HTTP Response Header Parameters
+|===
+|Header|Value
+
+|Content-Type|application/json
+|===
+
+[caption=""]
+.Response messages
+|===
+|HTTP Status Code |Reason
+
+|200|OK
+|===
+
+.Response body
+The response body contains a JSON representation of the list of wandelings or an empty list ([])
+
+.Sample response
+[source, json, options="nowrap"]
+----
+[{
+	name: "Janella Effertz", 
+	start: "Harry Kuhlman", 
+	finish: "Kathe Bergstrom", 
+	review: "Lyda Macejkovic"
+}, 
+{
+	name: "Mr. Christeen Langworth", 
+	start: "Keila Bechtelar", 
+	finish: "Arnold Terry", 
+	review: "Valentine Schinner Jr."
+}, 
+{
+	name: "Leeann Beahan", 
+	start: "Chad Wisozk", 
+	finish: "Ms. Chung Crona", 
+	review: "Adina Schamberger"
+}]
+----
+
+== POST: Create wandeling
+
+.Purpose
+Create a wandeling
+
+=== Request
+
+[caption=""]
+.HTTP Request Header Parameters
+|===
+|Header|Value
+
+|Content-Type|application/json
+|===
+
+
+[caption=""]
+.Request properties
+|===
+|Property|Value
+
+|URL|{baseUrl}
+|Method|POST
+|===
+
+.Path parameters
+* not applicable
+
+
+.Request Body
+The request body contains a JSON representation of the new to be created wandeling **WITHOUT the id**, since the id is set by the application
+
+.Sample request
+[source, json, options="nowrap", subs="attributes"]
+----
+POST {baseUrl}
+----
+
+.Sample request body
+[source, json, options="nowrap"]
+----
+{
+	name: "Rena Johnston", 
+	start: "Patrica Witting", 
+	finish: "Dr. Eldridge Leuschke", 
+	review: "Seymour Lemke"
+}
+----
+
+=== Response
+
+The response body contains a JSON representation of the created wandeling
+
+[caption=""]
+.HTTP Response Header Parameters
+|===
+|Header|Value
+
+|Content-Type|application/json
+|===
+
+[caption=""]
+.Response messages
+|===
+|HTTP Status Code |Reason
+
+|200|OK
+|===
+
+.Response body
+Our controller's method returns the created wandeling respresented as JSON **WITH the id**, since the id is NOW set by the application
+
+.Sample response body
+[source, json, options="nowrap"]
+----
+{
+	id: 6744185659, 
+	name: "Rory Ryan", 
+	start: "Hanh Greenholt", 
+	finish: "Patrick Streich", 
+	review: "Mrs. Thomas Nolan"
+}
+----
+
+== GET: Get wandeling
+
+.Purpose
+Obtains a specific wandeling registered in the application by it's unique identifier
+
+=== Request
+
+[caption=""]
+.HTTP Request Header Parameters
+|===
+|Header|Value
+
+|Content-Type|application/json
+|===
+
+[caption=""]
+.Request properties
+|===
+|Property|Value
+
+|URL|{baseUrl}/{id}
+|Method|GET
+|===
+
+
+.Path parameters
+* id: an Integer as the identifier of the wandeling to be obtained
+
+.Request Body
+* not applicable
+
+.Sample request
+[source, json, options="nowrap", subs="attributes"]
+----
+GET {baseUrl}/3
+----
+
+=== Response
+
+Our controller's method returns a wandeling represented as JSON
+
+[caption=""]
+.HTTP Response Header Parameters
+|===
+|Header|Value
+
+|Content-Type|application/json
+|===
+
+[caption=""]
+.Response messages
+|===
+|HTTP Status Code |Reason
+
+|200|OK
+|404|Not found
+|===
+
+.Response body
+The response body contains a JSON representation of the requested Wandeling by {id} or is empty when the Wandeling is not found
+
+.Sample response body
+[source, json, options="nowrap"]
+----
+{
+	id: 9458298507, 
+	name: "Reatha Abbott", 
+	start: "Vicki Feil", 
+	finish: "Jenice Labadie", 
+	review: "Junior Gleason"
+}
+----
+
+== PUT: Update wandeling
+
+.Purpose
+Update a wandeling
+
+=== Request
+
+[caption=""]
+.HTTP Request Header Parameters
+|===
+|Header|Value
+
+|Content-Type|application/json
+|===
+
+
+[caption=""]
+.Request properties
+|===
+|Property|Value
+
+|URL|{baseUrl}/{id}
+|Method|PUT
+|===
+
+.Path parameters
+* id: an Integer as the identifier of the wandeling to be updated
+
+.Request Body
+The request body contains a JSON representation of the update of the properties of the wandeling **WITHOUT the id**, since the id is sent as the Path Parameter
+
+.Sample request
+[source, json, options="nowrap", subs="attributes"]
+----
+PUT {baseUrl}/4
+----
+
+.Sample request body
+[source, json, options="nowrap"]
+----
+{
+	name: "Bart Tremblay", 
+	start: "Roberto Hoppe", 
+	finish: "Odis Corwin", 
+	review: "Doyle White"
+}
+----
+
+=== Response
+
+Our controller's method returns the updated wandeling respresented as JSON **WITH the id**
+
+[caption=""]
+.HTTP Response Header Parameters
+|===
+|Header|Value
+
+|Content-Type|application/json
+|===
+
+[caption=""]
+.Response messages
+|===
+|HTTP Status Code |Reason
+
+|200|OK
+|404|Not found
+|===
+
+.Response body
+The response body contains a JSON representation of the updated wandeling
+
+.Sample response body
+[source, json, options="nowrap"]
+----
+{
+	id: 8474953923, 
+	name: "Antonia Homenick", 
+	start: "Malik Kuvalis", 
+	finish: "Melissia Emmerich Jr.", 
+	review: "Cameron Cole"
+}
+----
+
+== DELETE: Delete wandeling
+
+.Purpose
+Delete a specific wandeling registered in the application by it's unique identifier
+
+=== Request
+
+[caption=""]
+.Request properties
+|===
+|Property|Value
+
+|URL|{baseUrl}/{id}
+|Method|DELETE
+|===
+
+.Path parameters
+* id: an Integer as the identifier of the wandeling to be obtained
+
+.Request Body
+* not applicable
+
+.Sample request
+[source, json, options="nowrap",  subs="attributes"]
+----
+DELETE {baseUrl}/3
+----
+
+=== Response
+
+Our controller's method returns a statuscode based on the success of the deletion
+
+[caption=""]
+.Response messages
+|===
+|HTTP Status Code |Reason
+
+|204|No Content
+|404|Not found
+|===
+
+.Response body
+* not applicable

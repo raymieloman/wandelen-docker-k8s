@@ -1,0 +1,9 @@
+:revnumber: {docVersion}
+:toclevels: 1
+:docinfo2:
+:sectnumlevels: 1
+:sectnums!:
+
+= Wandelen API documentation
+
+== <<wandelings.api.adoc#, Wandeling API documentation>>
