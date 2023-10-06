@@ -31,7 +31,8 @@ spec:
      spec:
        containers:
        - name: api
-         image: rloman/wandelen_api:latest         env:
+         image: rloman/wandelen_api:latest
+         env:
          - name: DATABASE_URL
            valueFrom:
             configMapKeyRef:
