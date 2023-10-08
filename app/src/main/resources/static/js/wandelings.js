@@ -1,7 +1,6 @@
 'use strict';
 
-var hostname= 'http://api.wandelen.acme.local'
-var api = hostname+'/api/wandelings';
+var api = 'api/wandelings';
 var wandelingsDataTable;
 
 $(document).ready(function() {

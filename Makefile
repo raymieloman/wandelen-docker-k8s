@@ -23,9 +23,8 @@ deploy:
 	kubectl apply -f kubernetes/mysql-deployment.yaml
 	kubectl wait --for=condition=ready pod -l app=mysql --timeout=60s
 	kubectl apply -f kubernetes/wandelen-app-deployment.yaml
-	kubectl apply -f kubernetes/ingress-wandelen.yaml
 	kubectl apply -f kubernetes/ui.yaml
-	kubectl apply -f kubernetes/ingress-wandelen-ui.yaml
+	kubectl apply -f kubernetes/ingress-wandelen.yaml
 
 install:	api ui
 	docker login
@@ -33,7 +32,7 @@ install:	api ui
 	docker image push rloman/wandelen_ui:latest
 
 ui:
-	docker image build -t rloman/wandelen_ui:latest ui
+	docker image build -t rloman/wandelen_ui:latest -f ui/Dockerfile .
 
 api:
 	docker image build -t rloman/wandelen_api:latest app
@@ -61,7 +60,6 @@ print_ingress:
 	@kubectl get ingress ingress-wandelen | grep -v NAME | sed -E 's/\s+/ /g' | cut --delimiter=' ' -f 3,4 | sed -E 's/([a-z]*\..+).*\s+(.+)/\2\t\1/'
 
 teardown:
-	kubectl delete ingress ingress-wandelen-ui --namespace=wandelen
 	kubectl delete ingress ingress-wandelen --namespace=wandelen
 	kubectl delete deployment wandelen-ui --namespace=wandelen
 	kubectl delete deployment wandelen --namespace=wandelen

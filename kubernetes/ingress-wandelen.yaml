@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: api.wandelen.acme.local
+    - host: wandelen.acme.local
       http:
         paths:
           - backend:
@@ -14,5 +14,12 @@ spec:
                 name: wandelen
                 port:
                   number: 8080
+            path: /api
+            pathType: Prefix
+          - backend:
+              service:
+                name: wandelen-ui
+                port:
+                  number: 8999
             path: /
             pathType: Prefix

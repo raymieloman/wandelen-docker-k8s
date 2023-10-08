@@ -1,2 +1,2 @@
 FROM nginx:latest
-COPY ./static /usr/share/nginx/html
+COPY app/src/main/resources/static /usr/share/nginx/html
