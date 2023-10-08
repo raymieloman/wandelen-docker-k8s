@@ -32,7 +32,7 @@ install:	api ui
 	docker image push rloman/wandelen_ui:latest
 
 ui:
-	docker image build -t rloman/wandelen_ui:latest -f ui/Dockerfile .
+	docker image build -t rloman/wandelen_ui:latest -f app/ui/Dockerfile app
 
 api:
 	docker image build -t rloman/wandelen_api:latest app
