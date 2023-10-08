@@ -28,9 +28,9 @@ deploy:
 install:	image
 	docker login
 	docker image push rloman/wandelen_api:latest
+	
 image:
-	docker image build -t wandelen_api:latest app
-	docker image tag wandelen_api:latest rloman/wandelen_api:latest
+	docker image build -t rloman/wandelen_api:latest app
 
 openport:
 	kubectl port-forward service/wandelen 8081:8080 &
