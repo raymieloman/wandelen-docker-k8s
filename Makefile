@@ -32,10 +32,10 @@ install:	api ui
 	docker image push rloman/wandelen_ui:latest
 
 ui:
-	docker image build -t rloman/wandelen_ui:latest -f app/ui/Dockerfile app
+	docker image build -t rloman/wandelen_ui:latest -f app/Dockerfile-ui app
 
 api:
-	docker image build -t rloman/wandelen_api:latest app
+	docker image build -t rloman/wandelen_api:latest -f app/Dockerfile-api app
 
 openport:
 	kubectl port-forward service/wandelen 8081:8080 &
