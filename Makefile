@@ -1,4 +1,4 @@
-.PHONY: deploy image install openport closeport test print_ingress test_ingress teardown
+.PHONY: deploy api ui install openport closeport test print_ingress test_ingress teardown
 
 	# If you installed minikube then add this line => kubectl := minikube kubectl --
 	# and change below every occurrence of @kubectl to @$(kubectl)
@@ -24,12 +24,18 @@ deploy:
 	kubectl wait --for=condition=ready pod -l app=mysql --timeout=60s
 	kubectl apply -f kubernetes/wandelen-app-deployment.yaml
 	kubectl apply -f kubernetes/ingress-wandelen.yaml
+	kubectl apply -f kubernetes/ui.yaml
+	kubectl apply -f kubernetes/ingress-wandelen-ui.yaml
 
-install:	image
+install:	api ui
 	docker login
 	docker image push rloman/wandelen_api:latest
-	
-image:
+	docker image push rloman/wandelen_ui:latest
+
+ui:
+	docker image build -t rloman/wandelen_ui:latest ui
+
+api:
 	docker image build -t rloman/wandelen_api:latest app
 
 openport:
@@ -53,8 +59,11 @@ print_ingress:
 	@echo
 	@echo 'Add this to hosts file =>'
 	@kubectl get ingress ingress-wandelen | grep -v NAME | sed -E 's/\s+/ /g' | cut --delimiter=' ' -f 3,4 | sed -E 's/([a-z]*\..+).*\s+(.+)/\2\t\1/'
+
 teardown:
+	kubectl delete ingress ingress-wandelen-ui --namespace=wandelen
 	kubectl delete ingress ingress-wandelen --namespace=wandelen
+	kubectl delete deployment wandelen-ui --namespace=wandelen
 	kubectl delete deployment wandelen --namespace=wandelen
 	kubectl delete deployment mysql --namespace=wandelen
 	kubectl delete pvc mysql-pv-claim --namespace=wandelen

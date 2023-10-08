@@ -1,18 +1,18 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-wandelen
+  name: ingress-wandelen-ui
   namespace: wandelen
 spec:
   ingressClassName: nginx
   rules:
-    - host: api.wandelen.acme.local
+    - host: ui.wandelen.acme.local
       http:
         paths:
           - backend:
               service:
-                name: wandelen
+                name: wandelen-ui
                 port:
-                  number: 8080
+                  number: 8999
             path: /
             pathType: Prefix
