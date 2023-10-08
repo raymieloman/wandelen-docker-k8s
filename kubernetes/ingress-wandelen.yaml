@@ -21,7 +21,7 @@ spec:
                 name: wandelen
                 port:
                   number: 8080
-            path: "/swagger-ui , /v3/api-docs/ , /swagger-ui.html"
+            path: /swagger-ui , /v3/api-docs/ , /swagger-ui.html
             pathType: Prefix
           - backend:
               service:
