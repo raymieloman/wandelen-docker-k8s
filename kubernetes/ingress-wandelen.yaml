@@ -18,6 +18,13 @@ spec:
             pathType: Prefix
           - backend:
               service:
+                name: wandelen
+                port:
+                  number: 8080
+            path: /swagger-ui
+            pathType: Prefix
+          - backend:
+              service:
                 name: wandelen-ui
                 port:
                   number: 8999
