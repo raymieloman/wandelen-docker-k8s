@@ -14,29 +14,8 @@ spec:
                 name: wandelen
                 port:
                   number: 8080
-            path: /api
-            pathType: Prefix
-          - backend:
-              service:
-                name: wandelen
-                port:
-                  number: 8080
-            path: /swagger-ui.html
-            pathType: Prefix          
-          - backend:
-              service:
-                name: wandelen
-                port:
-                  number: 8080
-            path: /swagger-ui
-            pathType: Prefix            
-          - backend:
-              service:
-                name: wandelen
-                port:
-                  number: 8080
-            path: /v3/api-docs
-            pathType: Prefix                                   
+            path: "/api|/swagger-ui.html|/swagger-ui|/v3/api-docs"
+            pathType: Prefix                         
           - backend:
               service:
                 name: wandelen-ui
