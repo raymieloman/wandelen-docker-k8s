@@ -34,6 +34,6 @@ spec:
     spec:
       containers:
       - image: rloman/wandelen_ui:latest
-        name: wandelen-ui-bg799
+        name: ui
         ports:
         - containerPort: 80
