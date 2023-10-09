@@ -22,6 +22,6 @@ spec:
               service:
                 name: wandelen-ui
                 port:
-                  number: 8999
+                  number: 8080
             path: /
             pathType: Prefix

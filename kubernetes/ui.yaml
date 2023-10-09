@@ -6,8 +6,8 @@ metadata:
   name: wandelen-ui
 spec:
   ports:
-    - name: 8999-80
-      port: 8999
+    - name: 8080-80
+      port: 8080
       protocol: TCP
       targetPort: 80
   selector:
