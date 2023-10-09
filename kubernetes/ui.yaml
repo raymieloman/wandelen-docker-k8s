@@ -1,18 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: wandelen-ui
+  namespace: wandelen
   labels:
     app: wandelen-ui
-  name: wandelen-ui
 spec:
+  type: ClusterIP
+  selector:
+    app: wandelen-ui
   ports:
     - name: 8080-80
       port: 8080
       protocol: TCP
       targetPort: 80
-  selector:
-    app: wandelen-ui
-  type: ClusterIP
 ---
 
 apiVersion: apps/v1
