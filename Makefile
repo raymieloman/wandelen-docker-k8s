@@ -22,7 +22,7 @@ deploy:
 	kubectl apply -f kubernetes/mysql-pvc.yaml
 	kubectl apply -f kubernetes/mysql-deployment.yaml
 	kubectl wait --for=condition=ready pod -l app=mysql --timeout=60s
-	kubectl apply -f kubernetes/wandelen-app-deployment.yaml
+	kubectl apply -f kubernetes/wandelen-api-deployment.yaml
 	kubectl apply -f kubernetes/wandelen-ui-deployment.yaml
 	kubectl apply -f kubernetes/ingress-wandelen.yaml
 
@@ -30,8 +30,10 @@ install:	api ui
 	docker login
 	docker image push rloman/wandelen_api:latest
 	docker image push rloman/wandelen_ui:latest
+
 ui:
 	docker image build -t rloman/wandelen_ui:latest -f app/Dockerfile-ui app
+
 api:
 	docker image build -t rloman/wandelen_api:latest -f app/Dockerfile-api app
 
@@ -77,5 +79,6 @@ fat_jar:
 
 recreate_configmap:
 	kubectl create configmap myconfigmap --from-env-file kubernetes/myconfigmap.properties --namespace=wandelen --dry-run=client -o yaml > kubernetes/myconfigmap.yaml
+
 recreate_secret:
 	kubectl create secret generic mysecret --from-env-file kubernetes/mysecret.properties --namespace=wandelen --type=Opaque --dry-run=client -o yaml > kubernetes/mysecret.yaml
