@@ -22,7 +22,7 @@ deploy:
 	kubectl apply -f kubernetes/mysql-pvc.yaml
 	kubectl apply -f kubernetes/mysql-deployment.yaml
 	kubectl wait --for=condition=ready pod -l app=mysql --timeout=60s
-	kubectl apply -f kubernetes/wandelen-app-deployment.yaml
+	kubectl apply -f kubernetes/wandelen-api-deployment.yaml
 	kubectl apply -f kubernetes/wandelen-ui-deployment.yaml
 	kubectl apply -f kubernetes/ingress-wandelen.yaml
 
