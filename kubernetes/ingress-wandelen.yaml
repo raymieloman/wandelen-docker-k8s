@@ -4,7 +4,7 @@ metadata:
   name: ingress-wandelen
   namespace: wandelen
   annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"  
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
@@ -17,7 +17,7 @@ spec:
                 port:
                   number: 8080
             path: /(.*api.*|.*swagger.*)
-            pathType: Prefix                         
+            pathType: Prefix
           - backend:
               service:
                 name: wandelen-ui
