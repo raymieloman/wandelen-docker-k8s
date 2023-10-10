@@ -79,6 +79,6 @@ fat_jar:
 
 recreate_configmap:
 	kubectl create configmap myconfigmap --from-env-file kubernetes/myconfigmap.properties --namespace=wandelen --dry-run=client -o yaml > kubernetes/myconfigmap.yaml
-	
+
 recreate_secret:
 	kubectl create secret generic mysecret --from-env-file kubernetes/mysecret.properties --namespace=wandelen --type=Opaque --dry-run=client -o yaml > kubernetes/mysecret.yaml
