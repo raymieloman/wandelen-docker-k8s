@@ -23,17 +23,15 @@ deploy:
 	kubectl apply -f kubernetes/mysql-deployment.yaml
 	kubectl wait --for=condition=ready pod -l app=mysql --timeout=60s
 	kubectl apply -f kubernetes/wandelen-app-deployment.yaml
-	kubectl apply -f kubernetes/ui.yaml
+	kubectl apply -f kubernetes/wandelen-ui-deployment.yaml
 	kubectl apply -f kubernetes/ingress-wandelen.yaml
 
 install:	api ui
 	docker login
 	docker image push rloman/wandelen_api:latest
 	docker image push rloman/wandelen_ui:latest
-
 ui:
 	docker image build -t rloman/wandelen_ui:latest -f app/Dockerfile-ui app
-
 api:
 	docker image build -t rloman/wandelen_api:latest -f app/Dockerfile-api app
 
