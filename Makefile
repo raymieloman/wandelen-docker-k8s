@@ -66,9 +66,9 @@ teardown:
 	kubectl delete deployment mysql --namespace=wandelen
 	kubectl delete pvc mysql-pv-claim --namespace=wandelen
 	kubectl delete secret mysecret --namespace=wandelen
+	kubectl delete service mysql --namespace=wandelen
 	kubectl delete service wandelen-ui --namespace=wandelen
 	kubectl delete service wandelen-api --namespace=wandelen
-	kubectl delete service mysql --namespace=wandelen
 	kubectl delete namespace wandelen
 	kubectl config set-context --current --namespace=default
 
