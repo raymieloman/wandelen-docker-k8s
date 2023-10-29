@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: wandelen.acme.local
+    - host: wandelen.carpago.nl
       http:
         paths:
           - backend:
