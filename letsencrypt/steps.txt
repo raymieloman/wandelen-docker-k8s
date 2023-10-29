@@ -3,7 +3,19 @@
 Have a kubernetes ClusterIP service running
 Have an ingress running in the cluster pointing to the cluster ip service you created with a REAL DNS hostname (so in the registrar)
 
-Create namespace cert-manager
+.Create namespace cert-manager
+[source, shell]
+----
+kubectl create ns cert-manager
+----
+.Or apply the following yaml
+[source,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager
+----
 
 .Install cert-manager
 Browse to artifacthub.io
@@ -12,7 +24,7 @@ Use the official version (I would say with the most hits?)
 Follow the steps
 Validate the correct printing of the installation (no errors)
 
-Repeatedly installing the above cert-manager steps (the applying part) will not harm I suppose. but once is enough.
+WARNING: Repeatedly installing the above cert-manager steps (the applying part) will not harm I suppose. but once is enough.
 
 .Valdation
 [source, shell]
@@ -20,8 +32,7 @@ Repeatedly installing the above cert-manager steps (the applying part) will not 
 kubectl get crds
 ----
 
-
-.Install an issuer, in the namespace, use the content of the gitrepo below or this file
+.Install an issuer, in the namespace, use the content of the Digital Ocean gitrepo below or this file
 [source, yaml]
 ----
 apiVersion: cert-manager.io/v1
@@ -48,14 +59,10 @@ spec:
 // Some explain:
 the privateKeySecretRef is the reference to the to be created secret of the private key (not to be confused with the other secret, later on created for the certificate)
 
-By installing the cert-manager and issuer above we are using the so-called ACME protocol.
+NOTE: By installing the cert-manager and issuer above we are using the so-called ACME protocol.
 That is the abbrevation for: Automatic Certificate Management Engine.
 
-.More read about the issuer on this link:
-https://cert-manager.io/docs/configuration/acme/
-
-
-.Some validation
+.Validation
 [source, shell]
 ----
 kubeclt get crds -n wandelen
@@ -74,7 +81,7 @@ kubectl get secret -n wandelen
 There should be one secret, being the private key. (And at least you should see the one you just created)
 
 
-.Adapt the ingress to use the issuer for fetching a certificate
+.Adapt the ingress to use the in the previous steps created issuer for fetching a certificate
 
 .. Add this to ingress
 [source, yaml]
@@ -124,24 +131,24 @@ kubectl get certificates
 Browse to https://<yourdnshostname> and it should show that the traffic is secure
 (in our case: wandelen.carpago.nl is the hostname)
 
+== Resources
 
-
-==========
+.Movie by Kim Schlesinger
+this movie explain in a easy (with some errors) how it should be done from minute 45+:  (Thanks Kim Schlesinger)
+https://www.youtube.com/watch?v=MpovOI5eK58&t=36s
 
 .Great reference from Digital Ocean
 https://github.com/digitalocean/Kubernetes-Starter-Kit-Developers
 
-.Resources
-this movie explain in a easy (with some errors) how it should be done from minute 45+:  (Thanks Kim Schlesinger)
-https://www.youtube.com/watch?v=MpovOI5eK58&t=36s
-
-.Doc
+.Doc regarding cert-manager
 https://cert-manager.io/docs/
+
+
+.More read about the issuer on this link:
+https://cert-manager.io/docs/configuration/acme/
 
 .Installation of cert-manager deep link
 https://artifacthub.io/packages/helm/cert-manager/cert-manager
 
 .Deep link to cert-manager-issuer
 https://github.com/digitalocean/Kubernetes-Starter-Kit-Developers/blob/main/03-setup-ingress-controller/assets/manifests/nginx/cert-manager-issuer.yaml
-
-
