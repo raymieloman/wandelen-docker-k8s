@@ -12,10 +12,18 @@ Use the official version (I would say with the most hits?)
 Follow the steps
 Validate the correct printing of the installation (no errors)
 
-.Install an issuer, use the content of the gitrepo below or this file
+Repeatedly installing the above cert-manager steps (the applying part) will not harm I suppose. but once is enough.
+
+.Valdation
+[source, shell]
+----
+kubectl get crds
+----
+
+
+.Install an issuer, in the namespace, use the content of the gitrepo below or this file
 [source, yaml]
 ----
----
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
@@ -40,6 +48,12 @@ spec:
 // Some explain:
 the privateKeySecretRef is the reference to the to be created secret of the private key (not to be confused with the other secret, later on created for the certificate)
 
+By installing the cert-manager and issuer above we are using the so-called ACME protocol.
+That is the abbrevation for: Automatic Certificate Management Engine.
+
+.More read about the issuer on this link:
+https://cert-manager.io/docs/configuration/acme/
+
 
 .Some validation
 [source, shell]
@@ -56,6 +70,9 @@ challenges.acme.cert-manager.io                  2023-10-29T09:15:10Z
 ----
 kubectl get secret -n wandelen
 ----
+
+There should be one secret, being the private key. (And at least you should see the one you just created)
+
 
 .Adapt the ingress to use the issuer for fetching a certificate
 
@@ -109,12 +126,10 @@ Browse to https://<yourdnshostname> and it should show that the traffic is secur
 
 
 
-
-
-
-
 ==========
 
+.Great reference from Digital Ocean
+https://github.com/digitalocean/Kubernetes-Starter-Kit-Developers
 
 .Resources
 this movie explain in a easy (with some errors) how it should be done from minute 45+:  (Thanks Kim Schlesinger)
