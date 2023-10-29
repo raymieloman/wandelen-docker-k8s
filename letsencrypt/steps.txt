@@ -1,0 +1,132 @@
+.Prerequisites
+(Of course you already installed the ingress nginx helm chart to have ingress enabled)
+Have a kubernetes ClusterIP service running
+Have an ingress running in the cluster pointing to the cluster ip service you created with a REAL DNS hostname (so in the registrar)
+
+Create namespace cert-manager
+
+.Install cert-manager
+Browse to artifacthub.io
+Find cert-manager
+Use the official version (I would say with the most hits?)
+Follow the steps
+Validate the correct printing of the installation (no errors)
+
+.Install an issuer, use the content of the gitrepo below or this file
+[source, yaml]
+----
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-nginx
+  namespace: wandelen
+spec:
+  # ACME issuer configuration
+  # `email` - the email address to be associated with the ACME account (make sure it's a valid one)
+  # `server` - the URL used to access the ACME server’s directory endpoint
+  # `privateKeySecretRef` - Kubernetes Secret to store the automatically generated ACME account private key
+  acme:
+    email: <YOUR_VALID_EMAIL_ADDRESS_HERE>
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-nginx-private-key
+    solvers:
+      # Use the HTTP-01 challenge provider
+      - http01:
+          ingress:
+            class: nginx
+----
+// Some explain:
+the privateKeySecretRef is the reference to the to be created secret of the private key (not to be confused with the other secret, later on created for the certificate)
+
+
+.Some validation
+[source, shell]
+----
+kubeclt get crds -n wandelen
+----
+.Validation, should print some like this
+certificaterequests.cert-manager.io              2023-10-29T09:15:10Z
+certificates.cert-manager.io                     2023-10-29T09:15:10Z
+challenges.acme.cert-manager.io                  2023-10-29T09:15:10Z
+
+.Find secret
+[source, shell]
+----
+kubectl get secret -n wandelen
+----
+
+.Adapt the ingress to use the issuer for fetching a certificate
+
+.. Add this to ingress
+[source, yaml]
+----
+kind: Ingress
+metadata:
+  name: ingress-wandelen
+  namespace: wandelen
+  annotations:
+  	...
+  	...
+    cert-manager.io/issuer: letsencrypt-nginx
+----
+
+.. And add this to the yaml in the same level as rules and ingressClassName (I mean the tls part)
+[source, yaml]
+----
+spec:
+  tls:
+    - hosts:
+      - wandelen.carpago.nl
+      secretName: letsencrypt-nginx-wandelen
+  ingressClassName: nginx
+----
+. Some explain, this secretName is A DIFFERENT ONE than we created above. This secret is for the certificate, the previous one was for the private key.
+
+.Reapply the ingress yaml
+[source, shell]
+----
+kubectl apply -f ingress-wandelen.yaml
+----
+
+.Validate the output(s) of the changed ingress
+
+..Check the interesting crds
+[source, shell]
+----
+kubectl get orders
+kubectl get challenges
+kubectl get certificaterequests
+kubectl get certificates
+----
+.WARNING: The challenges part might be empty, it means that the challenge is already finished which is a good sign if the rest is also successful.
+
+
+.Ready to use
+Browse to https://<yourdnshostname> and it should show that the traffic is secure
+(in our case: wandelen.carpago.nl is the hostname)
+
+
+
+
+
+
+
+==========
+
+
+.Resources
+this movie explain in a easy (with some errors) how it should be done from minute 45+:  (Thanks Kim Schlesinger)
+https://www.youtube.com/watch?v=MpovOI5eK58&t=36s
+
+.Doc
+https://cert-manager.io/docs/
+
+.Installation of cert-manager deep link
+https://artifacthub.io/packages/helm/cert-manager/cert-manager
+
+.Deep link to cert-manager-issuer
+https://github.com/digitalocean/Kubernetes-Starter-Kit-Developers/blob/main/03-setup-ingress-controller/assets/manifests/nginx/cert-manager-issuer.yaml
+
+
