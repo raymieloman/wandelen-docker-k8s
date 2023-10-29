@@ -5,7 +5,12 @@ metadata:
   namespace: wandelen
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/issuer: letsencrypt-nginx
 spec:
+  tls:
+    - hosts:
+      - wandelen.carpago.nl
+      secretName: letsencrypt-nginx-wandelen
   ingressClassName: nginx
   rules:
     - host: wandelen.carpago.nl
