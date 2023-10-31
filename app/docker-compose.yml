@@ -14,3 +14,4 @@ services:
       - 3306:3306
 volumes:
   mysql01: {}
+# docker-compose down --volumes to drop it down
