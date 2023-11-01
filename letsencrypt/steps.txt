@@ -3,6 +3,11 @@
 Have a kubernetes ClusterIP service running
 Have an ingress running in the cluster pointing to the cluster ip service you created with a REAL DNS hostname (so in the registrar)
 
+.Upfront important notes
+* Be clear that we are using two private keys
+** One for the ACME acccount to communicate with Let's Encrypt
+** One which is the private key belong tot the certificate.
+
 .Create namespace cert-manager
 [source, shell]
 ----
