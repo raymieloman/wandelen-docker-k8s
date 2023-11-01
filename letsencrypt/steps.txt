@@ -57,7 +57,7 @@ spec:
             class: nginx
 ----
 // Some explain:
-the privateKeySecretRef is the reference to the to be created secret of the private key (not to be confused with the other secret, later on created for the certificate)
+the privateKeySecretRef is the reference to the to be created secret of the private key which contains the ACME account private key!!! (not to be confused with the other secret, later on created for the certificate)
 
 NOTE: By installing the cert-manager and issuer above we are using the so-called ACME protocol.
 That is the abbrevation for: Automatic Certificate Management Engine.
