@@ -1,0 +1,7 @@
+<ng-container>
+  <div>
+    <ul *ngFor="let wandeling of wandelings$|async">
+      <li [routerLink]="['/wandelings', wandeling.id]">Name: {{wandeling.name}}, Start: {{wandeling.start}}, Finish: {{wandeling.finish}}</li>
+    </ul>
+  </div>
+</ng-container>
