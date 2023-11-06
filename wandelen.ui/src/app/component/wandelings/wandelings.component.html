@@ -1,8 +1,9 @@
 <ng-container>
-  <mat-slider min="1" max="100" step="1" value="50"></mat-slider>
+  <mat-slide-toggle>Toggle me!</mat-slide-toggle>
   <div>
     <ul *ngFor="let wandeling of wandelings$|async">
-      <li [routerLink]="['/wandelings', wandeling.id]">Name: {{wandeling.name}}, Start: {{wandeling.start}}, Finish: {{wandeling.finish}}</li>
+      <li [routerLink]="['/wandelings', wandeling.id]">Name: {{wandeling.name}}, Start: {{wandeling.start}},
+        Finish: {{wandeling.finish}}</li>
     </ul>
   </div>
 </ng-container>
