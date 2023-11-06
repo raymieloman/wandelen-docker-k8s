@@ -1,5 +1,9 @@
 <ng-container>
-  <mat-slide-toggle>Toggle me!</mat-slide-toggle>
+  <mat-slide-toggle checked>Toggle me!</mat-slide-toggle>
+  // Button
+  <button mat-button>Basic</button>
+  // Button raised primary
+  <button mat-raised-button color="primary">Primary</button>
   <div>
     <ul *ngFor="let wandeling of wandelings$|async">
       <li [routerLink]="['/wandelings', wandeling.id]">Name: {{wandeling.name}}, Start: {{wandeling.start}},
